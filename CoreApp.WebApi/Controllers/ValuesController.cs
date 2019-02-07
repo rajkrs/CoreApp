@@ -12,6 +12,8 @@ namespace CoreApp.WebApi.Controllers
     [SkipIpWhitelistFilter]
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = false, GroupName = nameof(ValuesController))]
+
     public class ValuesController : ControllerBase
     {
         // GET api/values

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreApp.IpWhitelist\CoreApp.IpWhitelist.csproj" />
+    <ProjectReference Include="..\CoreApp.ModelStateValidation\CoreApp.ModelStateValidation.csproj" />
   </ItemGroup>
 
 </Project>
