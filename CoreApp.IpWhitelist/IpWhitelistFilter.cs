@@ -13,6 +13,7 @@ namespace CoreApp.IpWhitelist
         private readonly ILogger _logger;
             private readonly string _safelist;
 
+         
 
         public IpWhitelistFilter
                 (ILoggerFactory loggerFactory, IConfiguration configuration)

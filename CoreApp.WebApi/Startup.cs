@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using CoreApp.IpWhitelist;
+using CoreApp.ModelStateValidation;
 
 namespace CoreApp.WebApi
 {
@@ -28,12 +29,15 @@ namespace CoreApp.WebApi
         {
             services.AddScoped<IpWhitelistFilter>();
 
-            services.AddMvc(options =>
+            services.AddMvcCore(options =>
                options.Filters.Add(typeof(IpWhitelistFilter))
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonFormatters()
+            .AddXmlSerializerFormatters();
 
 
-           
+            services.UseCoreAppCustomModelValidation();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

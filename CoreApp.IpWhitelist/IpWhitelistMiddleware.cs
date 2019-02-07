@@ -1,29 +1,36 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace CoreApp.IpWhitelist
 {
     public class IpWhitelistMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<IpWhitelistMiddleware> _logger;
+        #region Private Fields
+
         private readonly List<string> _adminSafeIpList;
+        private readonly ILogger<IpWhitelistMiddleware> _logger;
+        private readonly RequestDelegate _next;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public IpWhitelistMiddleware(
             RequestDelegate next,
             ILogger<IpWhitelistMiddleware> logger,
             string ipSafeList)
         {
-            _adminSafeIpList = ipSafeList.Split(';').ToList(); 
+            _adminSafeIpList = ipSafeList.Split(';').ToList();
             _next = next;
             _logger = logger;
         }
-
 
         public IpWhitelistMiddleware(
             RequestDelegate next,
@@ -35,6 +42,15 @@ namespace CoreApp.IpWhitelist
             _logger = logger;
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public int MyProperty { get; set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public async Task Invoke(HttpContext context)
         {
@@ -57,15 +73,15 @@ namespace CoreApp.IpWhitelist
 
                 if (badIp)
                 {
-                    _logger.LogInformation(
-                        $"Forbidden Request from Remote IP address: {remoteIp}");
+                    _logger.LogInformation($"Forbidden Request from Remote IP address: {remoteIp}");
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     return;
                 }
             }
 
             await _next.Invoke(context);
-
         }
+
+        #endregion Public Methods
     }
 }
