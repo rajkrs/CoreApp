@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using CoreApp.IpWhitelist;
 using CoreApp.ModelStateValidation;
+using CoreApp.ApiCache;
 
 namespace CoreApp.WebApi
 {
@@ -30,13 +31,18 @@ namespace CoreApp.WebApi
             services.AddScoped<IpWhitelistFilter>();
 
             services.AddMvcCore(options =>
-               options.Filters.Add(typeof(IpWhitelistFilter))
+            {
+                //options.Filters.Add(typeof(IpWhitelistFilter))
+            }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddJsonFormatters()
             .AddXmlSerializerFormatters();
 
+ 
 
             services.UseCoreAppCustomModelValidation();
+            //services.UseCoreAppDistributedCaching(new CustomCachingConfig());
+            services.AddCoreAppDistributedCaching(new SqlCachingConfig());
 
         }
 
@@ -56,9 +62,10 @@ namespace CoreApp.WebApi
             //app.UseIpWhitelist((new string[] { "10.131.96.64", "::1" }).ToList());
 
 
-
             app.UseHttpsRedirection();
+            app.UseCoreAppDistributedCaching();
             app.UseMvc();
+
         }
     }
 }

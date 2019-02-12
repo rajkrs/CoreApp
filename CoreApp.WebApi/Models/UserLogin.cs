@@ -12,7 +12,7 @@ namespace CoreApp.WebApi.Models
         public int UserId { get; set; }
         public string Password { get; set; }
 
-        public DateTime RequestTime { get; set; }
+        public DateTime? RequestTime { get; set; }
 
     }
 }
