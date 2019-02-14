@@ -36,6 +36,7 @@ namespace CoreApp.WebApi
             }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddJsonFormatters()
+            .AddDataAnnotations()
             .AddXmlSerializerFormatters();
 
  
