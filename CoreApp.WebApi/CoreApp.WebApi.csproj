@@ -22,4 +22,19 @@
     <ProjectReference Include="..\CoreApp.ModelStateValidation\CoreApp.ModelStateValidation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\ValidationMessage.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ValidationMessage.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ValidationMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationMessage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

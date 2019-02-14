@@ -19,5 +19,12 @@ namespace CoreApp.WebApi.Controllers
         {
             return (userLogin.UserId == 1 && userLogin.Password == "1" );
         }
+
+        [HttpPost]
+        public ActionResult<bool> Post([FromBody]UserLogin userLogin)
+        {
+            return (userLogin.UserId == 1 && userLogin.Password == "1");
+        }
+
     }
 }
