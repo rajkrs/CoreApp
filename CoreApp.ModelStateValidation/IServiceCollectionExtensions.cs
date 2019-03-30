@@ -11,7 +11,7 @@ namespace CoreApp.ModelStateValidation
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection UseCoreAppCustomModelValidation(this IServiceCollection services)
+        public static IServiceCollection AddCoreAppCustomModelValidation(this IServiceCollection services)
         {
             _ = services.Configure((Action<ApiBehaviorOptions>)(apiBehaviorOptions =>
                     apiBehaviorOptions.InvalidModelStateResponseFactory = actionContext =>

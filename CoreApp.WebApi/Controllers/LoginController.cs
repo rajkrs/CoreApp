@@ -20,6 +20,14 @@ namespace CoreApp.WebApi.Controllers
             return (userLogin.UserId == 1 && userLogin.Password == "1" );
         }
 
+        [HttpGet("userinfo")]
+        public ActionResult GetUserInfo(long userId)
+        {
+            return null;
+        }
+
+
+        [Produces("application/x-protobuf")]
         [HttpPost]
         public ActionResult<bool> Post([FromBody]UserLogin userLogin)
         {
