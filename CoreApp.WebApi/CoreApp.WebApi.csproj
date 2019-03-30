@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
@@ -17,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppCore.Account.Provider\CoreApp.Account.Provider.csproj" />
+    <ProjectReference Include="..\AppCore.Account.ViewModel\CoreApp.Account.ViewModel.csproj" />
     <ProjectReference Include="..\CoreApp.ApiCache\CoreApp.ApiCache.csproj" />
     <ProjectReference Include="..\CoreApp.IpWhitelist\CoreApp.IpWhitelist.csproj" />
     <ProjectReference Include="..\CoreApp.ModelStateValidation\CoreApp.ModelStateValidation.csproj" />

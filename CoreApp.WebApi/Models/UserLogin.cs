@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CoreApp.WebApi.Resources;
 
+/// <summary>
+/// 
+/// </summary>
 namespace CoreApp.WebApi.Models
 {
     public class UserLogin

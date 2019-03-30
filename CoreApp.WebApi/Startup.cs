@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using CoreApp.IpWhitelist;
 using CoreApp.ModelStateValidation;
 using CoreApp.ApiCache;
+using CoreApp.Account.Provider;
+using CoreApp.Account.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreApp.WebApi
 {
@@ -39,11 +42,16 @@ namespace CoreApp.WebApi
             .AddDataAnnotations()
             .AddXmlSerializerFormatters();
 
- 
 
-            services.UseCoreAppCustomModelValidation();
+
+            services.AddCoreAppCustomModelValidation();
             //services.UseCoreAppDistributedCaching(new CustomCachingConfig());
             services.AddCoreAppDistributedCaching(new SqlCachingConfig());
+            services.AddCoreAppMapper();
+
+            services.AddDbContext<AccountDbContext>(context => { context.UseInMemoryDatabase("AccountTempDb"); });
+            services.AddTransient<IUserProvider, UserProvider>();
+
 
         }
 
