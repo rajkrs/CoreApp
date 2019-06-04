@@ -16,6 +16,8 @@ using CoreApp.ApiCache;
 using CoreApp.Account.Provider;
 using CoreApp.Account.Model;
 using Microsoft.EntityFrameworkCore;
+using CoreApp.Account.Repository;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreApp.WebApi
 {
@@ -31,11 +33,14 @@ namespace CoreApp.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddScoped<IpWhitelistFilter>();
 
             services.AddMvcCore(options =>
             {
-                //options.Filters.Add(typeof(IpWhitelistFilter))
+                //options.Filters.Add(typeof(IpWhitelistFilter));
+                options.ModelBinderProviders.Insert(0, new HeaderComplexModelBinderProvider());
+
             }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddJsonFormatters()
@@ -50,6 +55,8 @@ namespace CoreApp.WebApi
             services.AddCoreAppMapper();
 
             services.AddDbContext<AccountDbContext>(context => { context.UseInMemoryDatabase("AccountTempDb"); });
+
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserProvider, UserProvider>();
 
 
@@ -69,6 +76,8 @@ namespace CoreApp.WebApi
 
             //app.UseIpWhitelist(Configuration["IpWhitelist"]);
             //app.UseIpWhitelist((new string[] { "10.131.96.64", "::1" }).ToList());
+
+            HttpContextProvider.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
 
             app.UseHttpsRedirection();

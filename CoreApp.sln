@@ -16,13 +16,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.ModelStateValidatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.ApiCache", "CoreApp.ApiCache\CoreApp.ApiCache.csproj", "{88E6C798-9878-4C6C-855B-3AB4672EDD1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp.DataAccess", "CoreApp.DataAccess\CoreApp.DataAccess.csproj", "{DCE2D242-B849-469B-9C96-BE7075B03ED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.DataAccess", "CoreApp.DataAccess\CoreApp.DataAccess.csproj", "{DCE2D242-B849-469B-9C96-BE7075B03ED0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp.Account.Provider", "AppCore.Account.Provider\CoreApp.Account.Provider.csproj", "{A438DB0D-2C8A-46B5-8B16-BBC0FC54A15D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.Account.Provider", "AppCore.Account.Provider\CoreApp.Account.Provider.csproj", "{A438DB0D-2C8A-46B5-8B16-BBC0FC54A15D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp.Account.Model", "AppCore.Account.Model\CoreApp.Account.Model.csproj", "{A6D6B7CF-7F7C-4DE2-AD57-F536E80E6C57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.Account.Model", "AppCore.Account.Model\CoreApp.Account.Model.csproj", "{A6D6B7CF-7F7C-4DE2-AD57-F536E80E6C57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp.Account.ViewModel", "AppCore.Account.ViewModel\CoreApp.Account.ViewModel.csproj", "{87BE6773-D5F9-42ED-9605-CDBB793E7A08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApp.Account.ViewModel", "AppCore.Account.ViewModel\CoreApp.Account.ViewModel.csproj", "{87BE6773-D5F9-42ED-9605-CDBB793E7A08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp.Account.Repository", "CoreApp.Repository\CoreApp.Account.Repository.csproj", "{A7745F56-976A-4028-85F7-642608429528}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{87BE6773-D5F9-42ED-9605-CDBB793E7A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87BE6773-D5F9-42ED-9605-CDBB793E7A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87BE6773-D5F9-42ED-9605-CDBB793E7A08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7745F56-976A-4028-85F7-642608429528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7745F56-976A-4028-85F7-642608429528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7745F56-976A-4028-85F7-642608429528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7745F56-976A-4028-85F7-642608429528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

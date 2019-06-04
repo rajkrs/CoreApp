@@ -11,16 +11,16 @@ namespace CoreApp.WebApi.Controllers
     //[ServiceFilter(typeof(IpWhitelist.IpWhitelistFilter))]
     [SkipIpWhitelistFilter]
     [Route("api/[controller]")]
-    [ApiController]
     [ApiExplorerSettings(IgnoreApi = false, GroupName = nameof(ValuesController))]
 
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseApiController
     {
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2", "value3" };
+            return new string[] { "value1", "value2", "value3", UserId.ToString() };
         }
 
         // GET api/values/5

@@ -34,5 +34,15 @@ namespace CoreApp.WebApi.Controllers
             return (userLogin.UserId == 1 && userLogin.Password == "1");
         }
 
+
+        [HttpPost]
+        public ActionResult<bool> FromHeader([FromHeader]UserLogin userLogin)
+        {
+            //https://www.asptricks.net/2019/04/custom-model-binding-through-header-in.html
+            return (userLogin.UserId == 1 && userLogin.Password == "1");
+        }
+
+
+
     }
 }

@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApp.WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     [SkipIpWhitelistFilter]
+    [Route("api/user")]
+    [ApiController]
+
     public class UserController : ControllerBase
     {
 

@@ -14,41 +14,151 @@ namespace CoreApp.DataAccess
 
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        protected DbContext RepositoryContext { get; set; }
+        protected DbContext _dbContext { get; set; }
+        private DbSet<T> _dbSet = null;
+
 
         public RepositoryBase(DbContext repositoryContext)
         {
-            RepositoryContext = repositoryContext;
+            _dbContext = repositoryContext;
+            _dbSet = _dbContext.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> FindAllAsync()
+        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
-            return await RepositoryContext.Set<T>().ToListAsync();
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
+
         }
 
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> GetAll<TKey>(Expression<Func<T, TKey>> SortCriteria = null)
         {
-            return await RepositoryContext.Set<T>().Where(expression).ToListAsync();
+
+            return SortCriteria == null ? _dbSet.AsQueryable<T>() : _dbSet.OrderByDescending(SortCriteria).AsQueryable<T>();
+
         }
 
-        public void Create(T entity)
+
+        public virtual IQueryable<T> GetAll()
         {
-            RepositoryContext.Set<T>().Add(entity);
+
+            return _dbSet;
+
         }
 
-        public void Update(T entity)
+        public virtual Task<List<T>> GetAllAsync()
         {
-            RepositoryContext.Set<T>().Update(entity);
+            return _dbSet.ToListAsync();
         }
 
-        public void Delete(T entity)
+
+
+        public virtual T GetById(object id)
         {
-            RepositoryContext.Set<T>().Remove(entity);
+
+            return _dbSet.Find(id);
+
+
         }
 
-        public async Task SaveAsync()
+        public virtual Task<T> GetByIdAsync(object id)
         {
-            await RepositoryContext.SaveChangesAsync();
+
+            return _dbSet.FindAsync(id);
+
+
+        }
+
+
+
+        public void Add(T entity)
+        {
+
+            _dbSet.Add(entity);
+
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+
+            _dbSet.AddRange(entities);
+
+        }
+
+
+
+        public virtual void Update(T entity)
+        {
+            _dbSet.Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
+
+        }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+
+            _dbSet.UpdateRange(entities);
+
+        }
+
+
+
+        public virtual void Delete(T entity)
+        {
+            if (_dbContext.Entry(entity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entity);
+            }
+            _dbSet.Remove(entity);
+        }
+
+        public virtual void DeleteById(object id)
+        {
+            var entity = GetById(id);
+            if (entity != null)
+            {
+                Delete(entity);
+            }
+        }
+
+
+        public void DeleteRange(IEnumerable<T> entity)
+        {
+            _dbSet.RemoveRange(entity);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+            bool returnValue = true;
+            using (var dbContextTransaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    returnValue = false;
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return returnValue;
+
         }
 
 
@@ -59,7 +169,7 @@ namespace CoreApp.DataAccess
         public async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             var rowsAffected = 0;
-            using (var db = RepositoryContext.Database.GetDbConnection())
+            using (var db = _dbContext.Database.GetDbConnection())
             {
                 rowsAffected = await db.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
             }
@@ -69,7 +179,7 @@ namespace CoreApp.DataAccess
         public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             IEnumerable<T> result;
-            using (var db = RepositoryContext.Database.GetDbConnection())
+            using (var db = _dbContext.Database.GetDbConnection())
             {
                 result = await db.QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
             }
