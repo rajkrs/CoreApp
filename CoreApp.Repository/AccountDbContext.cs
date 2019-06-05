@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace CoreApp.Account.Model
+namespace CoreApp.Account.Repository
 {
     public class AccountDbContext : DbContext
     {

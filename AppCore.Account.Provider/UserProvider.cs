@@ -8,60 +8,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using CoreApp.Account.Repository;
 
 namespace CoreApp.Account.Provider
 {
-    public class UserProvider : RepositoryBase<User>, IUserProvider
+    public class UserProvider : IUserProvider
     {
-        private readonly IMapper _mapper;
-        public UserProvider(AccountDbContext repositoryContext, IMapper mapper)
-        : base(repositoryContext)
+        private readonly IUserRepository _userRepository;
+        public UserProvider(IUserRepository userRepository)
         {
-            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
 
-        public async Task CreateUserAsync(UserInfo userInfo)
-        {
-            var user = _mapper.Map<User>(userInfo);
-            Create(user);
-            await SaveAsync();
-        }
+        public Task CreateUserAsync(UserInfo userInfo)
+            => _userRepository.CreateUserAsync(userInfo);
 
-        public async Task UpdateUserAsync(UserInfo user)
-        {
-            Update(_mapper.Map<User>(user));
-            await SaveAsync();
-        }
+        public Task UpdateUserAsync(UserInfo user)
+                    => _userRepository.UpdateUserAsync(user);
 
-        public async Task DeleteUserAsync(UserInfo userInfo)
-        {
-            var user = _mapper.Map<User>(userInfo);
-            Delete(user);
-            await SaveAsync();
-        }
 
-        public async Task<IEnumerable<UserInfo>> GetAllUsersAsync()
-        {
-            return _mapper.Map<IEnumerable<UserInfo>>(await FindAllAsync());
+        public  Task DeleteUserAsync(UserInfo userInfo)
+                    => _userRepository.DeleteUserAsync(userInfo);
 
-        }
 
-        public async Task<UserInfo> GetUserByIdAsync(long userID)
-        {
-            var user = await FindByConditionAsync(o => o.ID.Equals(userID));
-            return _mapper.Map<UserInfo>(user);
+        public  Task<IEnumerable<UserInfo>> GetAllUsersAsync()
+                   => _userRepository.GetAllUsersAsync();
 
-        }
 
-        public Task<IEnumerable<UserDetails>> GetUserWithDetailsProcAsync(long userId)
-        {
-            return QueryAsync<UserDetails>("");
-        }
+        public  Task<UserInfo> GetUserByIdAsync(long userID)
+                   => _userRepository.GetUserByIdAsync(userID);
 
-        Task<UserInfo> IUserProvider.GetUserWithDetailsAsync(long userId)
-        {
-            throw new NotImplementedException();
-        }
+
+        public Task<UserDetails> GetUserWithDetailsAsync(long userId)
+                    => _userRepository.GetUserWithDetailsAsync(userId);
+
+        
     }
 }

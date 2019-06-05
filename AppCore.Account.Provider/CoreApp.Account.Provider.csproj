@@ -1,20 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppCore.Account.Model\CoreApp.Account.Model.csproj" />
     <ProjectReference Include="..\AppCore.Account.ViewModel\CoreApp.Account.ViewModel.csproj" />
     <ProjectReference Include="..\CoreApp.DataAccess\CoreApp.DataAccess.csproj" />
+    <ProjectReference Include="..\CoreApp.Repository\CoreApp.Account.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>

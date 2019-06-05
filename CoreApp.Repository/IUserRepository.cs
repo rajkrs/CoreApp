@@ -3,9 +3,9 @@ using CoreApp.Account.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CoreApp.Account.Provider
+namespace CoreApp.Account.Repository
 {
-    public interface IUserProvider
+    public interface IUserRepository
     {
         Task<IEnumerable<UserInfo>> GetAllUsersAsync();
         Task<UserInfo> GetUserByIdAsync(long userID);
