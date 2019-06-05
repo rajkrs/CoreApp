@@ -18,6 +18,8 @@ using CoreApp.Account.Model;
 using Microsoft.EntityFrameworkCore;
 using CoreApp.Account.Repository;
 using Microsoft.AspNetCore.Http;
+using CoreApp.DataAccess;
+using CoreApp.Order.Repository;
 
 namespace CoreApp.WebApi
 {
@@ -55,6 +57,11 @@ namespace CoreApp.WebApi
             services.AddCoreAppMapper();
 
             services.AddDbContext<AccountDbContext>(context => { context.UseInMemoryDatabase("AccountTempDb"); });
+
+            services.AddScoped<IUnitOfWork<AccountDbContext>, UnitOfWork<AccountDbContext>>();
+            services.AddScoped<IUnitOfWork<OrderDbContext>, UnitOfWork<OrderDbContext>>();
+
+            services.AddAuthorizeProfile();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserProvider, UserProvider>();

@@ -12,21 +12,18 @@ using System.Threading.Tasks;
 namespace CoreApp.DataAccess
 {
 
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         protected DbContext _dbContext { get; set; }
-        private DbSet<T> _dbSet = null;
 
-
-        public RepositoryBase(DbContext repositoryContext)
+        public Repository(DbContext repositoryContext)
         {
             _dbContext = repositoryContext;
-            _dbSet = _dbContext.Set<T>();
         }
 
         public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbContext.Set<T>();
 
             if (filter != null)
             {
@@ -47,7 +44,7 @@ namespace CoreApp.DataAccess
         public virtual IQueryable<T> GetAll<TKey>(Expression<Func<T, TKey>> SortCriteria = null)
         {
 
-            return SortCriteria == null ? _dbSet.AsQueryable<T>() : _dbSet.OrderByDescending(SortCriteria).AsQueryable<T>();
+            return SortCriteria == null ? _dbContext.Set<T>().AsQueryable<T>() : _dbContext.Set<T>().OrderByDescending(SortCriteria).AsQueryable<T>();
 
         }
 
@@ -55,13 +52,13 @@ namespace CoreApp.DataAccess
         public virtual IQueryable<T> GetAll()
         {
 
-            return _dbSet;
+            return _dbContext.Set<T>();
 
         }
 
         public virtual Task<List<T>> GetAllAsync()
         {
-            return _dbSet.ToListAsync();
+            return _dbContext.Set<T>().ToListAsync();
         }
 
 
@@ -69,7 +66,7 @@ namespace CoreApp.DataAccess
         public virtual T GetById(object id)
         {
 
-            return _dbSet.Find(id);
+            return _dbContext.Set<T>().Find(id);
 
 
         }
@@ -77,7 +74,7 @@ namespace CoreApp.DataAccess
         public virtual Task<T> GetByIdAsync(object id)
         {
 
-            return _dbSet.FindAsync(id);
+            return _dbContext.Set<T>().FindAsync(id);
 
 
         }
@@ -87,14 +84,14 @@ namespace CoreApp.DataAccess
         public void Add(T entity)
         {
 
-            _dbSet.Add(entity);
+            _dbContext.Set<T>().Add(entity);
 
         }
 
         public void AddRange(IEnumerable<T> entities)
         {
 
-            _dbSet.AddRange(entities);
+            _dbContext.Set<T>().AddRange(entities);
 
         }
 
@@ -102,7 +99,7 @@ namespace CoreApp.DataAccess
 
         public virtual void Update(T entity)
         {
-            _dbSet.Attach(entity);
+            _dbContext.Set<T>().Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
 
         }
@@ -110,7 +107,7 @@ namespace CoreApp.DataAccess
         public void UpdateRange(IEnumerable<T> entities)
         {
 
-            _dbSet.UpdateRange(entities);
+            _dbContext.Set<T>().UpdateRange(entities);
 
         }
 
@@ -120,9 +117,9 @@ namespace CoreApp.DataAccess
         {
             if (_dbContext.Entry(entity).State == EntityState.Detached)
             {
-                _dbSet.Attach(entity);
+                _dbContext.Set<T>().Attach(entity);
             }
-            _dbSet.Remove(entity);
+            _dbContext.Set<T>().Remove(entity);
         }
 
         public virtual void DeleteById(object id)
@@ -137,7 +134,7 @@ namespace CoreApp.DataAccess
 
         public void DeleteRange(IEnumerable<T> entity)
         {
-            _dbSet.RemoveRange(entity);
+            _dbContext.Set<T>().RemoveRange(entity);
         }
 
         public async Task<bool> SaveAsync()
@@ -176,7 +173,7 @@ namespace CoreApp.DataAccess
             return rowsAffected;
         }
 
-        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        public async Task<IEnumerable<T>> QueryAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             IEnumerable<T> result;
             using (var db = _dbContext.Database.GetDbConnection())

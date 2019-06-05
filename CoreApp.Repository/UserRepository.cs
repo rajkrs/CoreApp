@@ -12,12 +12,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreApp.Account.Repository
 {
-    public class UserRepository : RepositoryBase<User>, IUserRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
+        private readonly IUnitOfWork<AccountDbContext> _uow;
+
         private readonly IMapper _mapper;
-        public UserRepository(AccountDbContext repositoryContext, IMapper mapper)
-        : base(repositoryContext)
+        public UserRepository(IUnitOfWork<AccountDbContext> unitOfWork, IMapper mapper, AuthorizeProfile authorizeProfile) 
+            : base(authorizeProfile)
         {
+            _uow = unitOfWork;
             _mapper = mapper;
         }
 
@@ -25,39 +28,41 @@ namespace CoreApp.Account.Repository
         public async Task CreateUserAsync(UserInfo userInfo)
         {
             var user = _mapper.Map<User>(userInfo);
-            Add(user);
-            await SaveAsync();
+            _uow.GetRepository<User>().Add(user);
+            await _uow.SaveChangesAsync();
+            
         }
 
         public async Task UpdateUserAsync(UserInfo user)
         {
-            Update(_mapper.Map<User>(user));
-            await SaveAsync();
+            _uow.GetRepository<User>().Update(_mapper.Map<User>(user));
+            await _uow.SaveChangesAsync();
+ 
         }
 
         public async Task DeleteUserAsync(UserInfo userInfo)
         {
-            var user = _mapper.Map<User>(userInfo);
-            Delete(user);
-            await SaveAsync();
+            _uow.GetRepository<User>().Delete(_mapper.Map<User>(userInfo));
+            await _uow.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<UserInfo>> GetAllUsersAsync()
         {
-            return _mapper.Map<IEnumerable<UserInfo>>(await GetAllAsync());
+            return _mapper.Map<IEnumerable<UserInfo>>(await _uow.GetRepository<User>().GetAllAsync());
 
         }
 
         public async Task<UserInfo> GetUserByIdAsync(long userID)
         {
-            var user = await GetAll(o => o.ID.Equals(userID)).ToListAsync();
+            var user = await _uow.GetRepository<User>().GetAll(o => o.ID.Equals(userID)).ToListAsync();
             return _mapper.Map<UserInfo>(user);
                 
         }
 
         public async Task<UserDetails> GetUserWithDetailsAsync(long userId)
         {
-            return (await QueryAsync<UserDetails>("")).FirstOrDefault();
+            var details = await _uow.GetRepository<UserDetails>().QueryAsync("21@!@!@", OrgnizationId);
+            return details.FirstOrDefault();
         }
     }
 }

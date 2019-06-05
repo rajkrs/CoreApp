@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreApp.Account.Model;
 using CoreApp.IpWhitelist;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,12 +16,16 @@ namespace CoreApp.WebApi.Controllers
 
     public class ValuesController : BaseApiController
     {
-
+        private readonly AuthorizeProfile _authorizeProfile;
+        public ValuesController(AuthorizeProfile authorizeProfile)
+        {
+            _authorizeProfile = authorizeProfile;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2", "value3", UserId.ToString() };
+            return new string[] { "value1", "value2", UserId.ToString() , _authorizeProfile.UserId.ToString() };
         }
 
         // GET api/values/5

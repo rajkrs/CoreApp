@@ -13,9 +13,7 @@ namespace CoreApp.WebApi.Controllers
 {
     [SkipIpWhitelistFilter]
     [Route("api/user")]
-    [ApiController]
-
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
 
         IUserProvider _userProvider;

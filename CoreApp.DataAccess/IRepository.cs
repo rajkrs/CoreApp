@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CoreApp.DataAccess
 {
-    public interface IRepositoryBase<T>
+    public interface IRepository<T>
     {
 
         IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
@@ -34,7 +34,7 @@ namespace CoreApp.DataAccess
 
         //Extended Execution
         Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null);
-        Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null);
+        Task<IEnumerable<T>> QueryAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null);
 
         //ExecuteAsync
         //QueryAsync
